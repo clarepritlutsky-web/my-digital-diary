@@ -1,0 +1,18 @@
+style.css
+body {
+    margin: 0;
+    background: #f7e9ec;
+    color: #4a3a3d;
+    font-family: Georgia, serif;
+    text-align: center;
+}
+
+h1 {
+    margin-top: 60px;
+    font-size: 40px;
+    font-weight: normal;
+}
+
+p {
+    font-size: 18px;
+}
