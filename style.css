@@ -6,12 +6,106 @@ body {
     text-align: center;
 }
 
+header {
+    padding: 40px 20px 20px;
+}
+
 h1 {
-    margin-top: 60px;
-    font-size: 40px;
+    font-size: 42px;
+    font-weight: normal;
+    margin-bottom: 20px;
+}
+
+nav a {
+    color: #4a3a3d;
+    text-decoration: none;
+    margin: 0 12px;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+
+.room {
+    width: 80%;
+    max-width: 1000px;
+    height: 500px;
+
+    margin: 30px auto;
+
+    position: relative;
+
+    background: #efd5dc;
+
+    border: 2px solid #4a3a3d;
+    border-radius: 20px;
+}
+
+
+.object {
+    position: absolute;
+
+    font-size: 65px;
+
+    cursor: pointer;
+
+    transition: transform 0.2s;
+}
+
+.object:hover {
+    transform: scale(1.15);
+}
+
+.object span {
+    display: block;
+
+    font-size: 14px;
+
+    margin-top: 5px;
+}
+
+
+.bookshelf {
+    left: 10%;
+    top: 25%;
+}
+
+.television {
+    left: 45%;
+    top: 20%;
+}
+
+.music {
+    right: 10%;
+    top: 30%;
+}
+
+.flower {
+    left: 45%;
+    bottom: 10%;
+}
+
+
+.diary {
+    width: 70%;
+    max-width: 700px;
+
+    margin: 40px auto;
+
+    padding: 30px;
+
+    background: #fffaf8;
+
+    border: 1px solid #4a3a3d;
+}
+
+
+.diary h2 {
     font-weight: normal;
 }
 
-p {
-    font-size: 18px;
+
+footer {
+    padding: 50px;
 }
