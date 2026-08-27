@@ -347,3 +347,308 @@ footer {
     }
 
 }
+/* =====================================
+   SKETCHBOOK
+===================================== */
+
+.sketchbook-object {
+    position: absolute;
+    left: 30%;
+    top: 55%;
+}
+
+
+/* OVERLAY */
+
+.sketchbook-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(40, 30, 30, 0.45);
+
+    backdrop-filter: blur(4px);
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    z-index: 10000;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition:
+        opacity 0.3s ease,
+        visibility 0.3s ease;
+}
+
+
+.sketchbook-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+/* BOOK */
+
+.sketchbook {
+    width: min(850px, 90vw);
+
+    height: min(550px, 70vh);
+
+    display: flex;
+
+    perspective: 1800px;
+
+    box-shadow:
+        0 30px 70px rgba(0,0,0,0.25);
+}
+
+
+/* PAGES */
+
+.book-page {
+    width: 50%;
+
+    height: 100%;
+
+    background: #fffdf8;
+
+    box-sizing: border-box;
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+/* LEFT PAGE */
+
+.left-page {
+
+    border-radius: 5px 0 0 5px;
+
+    border-right: 1px solid #ddd6cc;
+}
+
+
+/* RIGHT PAGE */
+
+.right-page {
+
+    border-radius: 0 5px 5px 0;
+
+    border-left: 1px solid #e5ded5;
+
+}
+
+
+/* PAGE CONTENT */
+
+.page-content {
+
+    height: 100%;
+
+    box-sizing: border-box;
+
+    padding: 45px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+}
+
+
+/* PAPER LINES */
+
+.book-page::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background-image:
+        repeating-linear-gradient(
+            transparent,
+            transparent 28px,
+            rgba(120,120,120,0.08) 29px
+        );
+
+    pointer-events: none;
+}
+
+
+/* PAGE NUMBER */
+
+.page-number {
+
+    position: absolute;
+
+    top: 20px;
+
+    font-size: 11px;
+
+    color: #aaa;
+
+    letter-spacing: 2px;
+}
+
+
+/* HANDWRITING */
+
+.handwritten {
+
+    font-family: "Comic Sans MS", "Bradley Hand", cursive;
+
+    font-size: 25px;
+
+    color: #333;
+
+    margin: 0 0 20px;
+
+    transform: rotate(-2deg);
+}
+
+
+.handwritten.small {
+
+    font-size: 16px;
+
+    margin-top: 15px;
+
+    color: #555;
+}
+
+
+/* SKETCH */
+
+.sketch {
+
+    width: 70%;
+
+    max-width: 300px;
+
+    height: auto;
+
+    opacity: 0.85;
+}
+
+
+/* CONTROLS */
+
+.sketchbook-controls {
+
+    margin-top: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 25px;
+
+    color: white;
+}
+
+
+.sketchbook-controls button {
+
+    border: none;
+
+    background: rgba(255,255,255,0.9);
+
+    width: 42px;
+    height: 42px;
+
+    border-radius: 50%;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition: transform 0.2s ease;
+}
+
+
+.sketchbook-controls button:hover {
+
+    transform: scale(1.1);
+}
+
+
+#page-counter {
+
+    font-size: 12px;
+
+    letter-spacing: 2px;
+}
+
+
+/* CLOSE */
+
+.sketchbook-close {
+
+    position: absolute;
+
+    top: 25px;
+
+    right: 30px;
+
+    background: none;
+
+    border: none;
+
+    color: white;
+
+    font-size: 40px;
+
+    cursor: pointer;
+
+    z-index: 10;
+}
+
+
+.sketchbook-close:hover {
+
+    opacity: 0.6;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .sketchbook {
+
+        width: 92vw;
+
+        height: 60vh;
+    }
+
+    .page-content {
+
+        padding: 20px;
+    }
+
+    .handwritten {
+
+        font-size: 17px;
+    }
+
+    .handwritten.small {
+
+        font-size: 12px;
+    }
+
+}
