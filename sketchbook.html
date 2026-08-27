@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Sketchbook ♡</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            background: white;
+            color: #333;
+            font-family: Georgia, serif;
+            text-align: center;
+        }
+
+
+        header {
+            padding: 30px;
+        }
+
+
+        header a {
+            color: #333;
+            text-decoration: none;
+        }
+
+
+        h1 {
+            font-weight: normal;
+        }
+
+
+        .sketchbook {
+            width: 90%;
+            max-width: 900px;
+
+            margin: 40px auto;
+        }
+
+
+        .page {
+            min-height: 600px;
+
+            padding: 40px;
+
+            box-sizing: border-box;
+
+            border: 1px solid #ddd;
+
+            background: #fffaf8;
+
+            display: none;
+
+            align-items: center;
+
+            justify-content: center;
+
+            flex-direction: column;
+        }
+
+
+        .page.active {
+            display: flex;
+        }
+
+
+        .page img {
+
+            max-width: 90%;
+
+            max-height: 450px;
+
+            object-fit: contain;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .title {
+
+            font-size: 24px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .note {
+
+            color: #777;
+
+            max-width: 500px;
+
+            line-height: 1.6;
+
+        }
+
+
+        .controls {
+
+            margin-top: 25px;
+
+        }
+
+
+        button {
+
+            padding: 10px 20px;
+
+            margin: 5px;
+
+            border: 1px solid #333;
+
+            background: white;
+
+            cursor: pointer;
+
+            font-family: Georgia, serif;
+
+        }
+
+
+        button:hover {
+
+            background: #f3f3f3;
+
+        }
+
+
+        #page-number {
+
+            margin-top: 10px;
+
+            color: #777;
+
+        }
+
+
+        #loading {
+
+            padding: 100px;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <a href="index.html">
+        ← back home
+    </a>
+
+    <h1>
+        my sketchbook ♡
+    </h1>
+
+</header>
+
+
+<main class="sketchbook">
+
+
+    <div id="loading">
+
+        loading sketches...
+
+    </div>
+
+
+    <div id="pages"></div>
+
+
+    <div class="controls">
+
+        <button id="previous">
+            ← previous
+        </button>
+
+        <button id="next">
+            next →
+        </button>
+
+    </div>
+
+
+    <div id="page-number"></div>
+
+
+</main>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
+const SUPABASE_URL =
+    "https://bfuyopcvamjexixozxnm.supabase.co";
+
+
+const SUPABASE_KEY =
+    "sb_publishable_K21QP3ippzFaRfqSWgfX7w_Two3PEdT";
+
+
+const client =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+let sketches = [];
+
+let currentPage = 0;
+
+
+/* GET SKETCHES */
+
+async function loadSketches() {
+
+
+    const { data, error } =
+        await client
+
+            .from("posts")
+
+            .select("*")
+
+            .eq("type", "sketch")
+
+            .order(
+                "created_at",
+                {
+                    ascending: true
+                }
+            );
+
+
+    if (error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "loading"
+        ).textContent =
+            "Could not load sketches.";
+
+        return;
+
+    }
+
+
+    sketches = data;
+
+
+    document.getElementById(
+        "loading"
+    ).style.display = "none";
+
+
+    displaySketches();
+
+}
+
+
+/* CREATE PAGES */
+
+function displaySketches() {
+
+
+    const pages =
+        document.getElementById(
+            "pages"
+        );
+
+
+    pages.innerHTML = "";
+
+
+    if (sketches.length === 0) {
+
+        pages.innerHTML = `
+
+            <div class="page active">
+
+                <div class="title">
+                    your sketchbook is empty ♡
+                </div>
+
+                <div class="note">
+                    Upload your first sketch
+                    from the admin page.
+                </div>
+
+            </div>
+
+        `;
+
+        updatePageNumber();
+
+        return;
+
+    }
+
+
+    sketches.forEach(
+        (sketch, index) => {
+
+
+            const page =
+                document.createElement(
+                    "div"
+                );
+
+
+            page.className =
+                "page";
+
+
+            if (index === 0) {
+
+                page.classList.add(
+                    "active"
+                );
+
+            }
+
+
+            page.innerHTML = `
+
+                <img
+                    src="${sketch.image_url}"
+                    alt="${sketch.title || "Sketch"}"
+                >
+
+                <div class="title">
+                    ${sketch.title || ""}
+                </div>
+
+                <div class="note">
+                    ${sketch.caption || ""}
+                </div>
+
+            `;
+
+
+            pages.appendChild(
+                page
+            );
+
+        }
+    );
+
+
+    updatePageNumber();
+
+}
+
+
+/* SHOW PAGE */
+
+function showPage(index) {
+
+
+    const pages =
+        document.querySelectorAll(
+            ".page"
+        );
+
+
+    if (
+        pages.length === 0 ||
+        sketches.length === 0
+    ) {
+
+        return;
+
+    }
+
+
+    pages.forEach(
+        page => {
+
+            page.classList.remove(
+                "active"
+            );
+
+        }
+    );
+
+
+    pages[index].classList.add(
+        "active"
+    );
+
+
+    currentPage = index;
+
+
+    updatePageNumber();
+
+}
+
+
+/* PAGE NUMBER */
+
+function updatePageNumber() {
+
+
+    const number =
+        document.getElementById(
+            "page-number"
+        );
+
+
+    if (sketches.length === 0) {
+
+        number.textContent = "";
+
+        return;
+
+    }
+
+
+    number.textContent =
+        `${currentPage + 1} / ${sketches.length}`;
+
+}
+
+
+/* PREVIOUS */
+
+document.getElementById(
+    "previous"
+).addEventListener(
+    "click",
+    () => {
+
+        if (currentPage > 0) {
+
+            showPage(
+                currentPage - 1
+            );
+
+        }
+
+    }
+);
+
+
+/* NEXT */
+
+document.getElementById(
+    "next"
+).addEventListener(
+    "click",
+    () => {
+
+        if (
+            currentPage <
+            sketches.length - 1
+        ) {
+
+            showPage(
+                currentPage + 1
+            );
+
+        }
+
+    }
+);
+
+
+/* START */
+
+loadSketches();
+
+</script>
+
+
+</body>
+
+</html>
