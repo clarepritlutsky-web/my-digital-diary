@@ -28,6 +28,7 @@
 
 <br><br>
 
+
 <select id="post-type">
 
     <option value="photo">
@@ -105,18 +106,19 @@
 <p id="status"></p>
 
 
+<!-- SUPABASE -->
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
 <script>
-
 
 const SUPABASE_URL =
     "https://bfuyopcvamjexixozxnm.supabase.co";
 
 
 const SUPABASE_KEY =
-    "YOUR_PUBLISHABLE_KEY";
+    "sb_publishable_K21QP3ippzFaRfqSWgfX7w_Two3PEdT";
 
 
 const client =
@@ -141,7 +143,6 @@ publishButton.addEventListener(
 
 
 async function publishPost() {
-
 
     const type =
         document.getElementById(
@@ -171,18 +172,17 @@ async function publishPost() {
         "Publishing...";
 
 
-    try {
+    publishButton.disabled = true;
 
+
+    try {
 
         let imageUrl = null;
 
 
-        /*
-        Upload image if there is one
-        */
+        /* UPLOAD IMAGE */
 
         if (file) {
-
 
             const extension =
                 file.name
@@ -191,7 +191,9 @@ async function publishPost() {
 
 
             const fileName =
-                `${Date.now()}.${extension}`;
+                `${Date.now()}-${Math.random()
+                    .toString(36)
+                    .substring(2)}.${extension}`;
 
 
             const bucket =
@@ -200,7 +202,7 @@ async function publishPost() {
                     : "photos";
 
 
-            const { error } =
+            const { error: uploadError } =
                 await client
                     .storage
                     .from(bucket)
@@ -210,12 +212,12 @@ async function publishPost() {
                     );
 
 
-            if (error) {
-
-                throw error;
-
+            if (uploadError) {
+                throw uploadError;
             }
 
+
+            /* GET IMAGE URL */
 
             const { data } =
                 client
@@ -232,11 +234,9 @@ async function publishPost() {
         }
 
 
-        /*
-        Save post
-        */
+        /* SAVE POST */
 
-        const { error } =
+        const { error: databaseError } =
             await client
                 .from("posts")
                 .insert({
@@ -252,20 +252,18 @@ async function publishPost() {
                 });
 
 
-        if (error) {
-
-            throw error;
-
+        if (databaseError) {
+            throw databaseError;
         }
 
+
+        /* SUCCESS */
 
         status.textContent =
             "Published ♡";
 
 
-        /*
-        Clear form
-        */
+        /* CLEAR FORM */
 
         document.getElementById(
             "title"
@@ -287,7 +285,6 @@ async function publishPost() {
 
     catch (error) {
 
-
         console.error(error);
 
 
@@ -295,19 +292,15 @@ async function publishPost() {
             "Error: " +
             error.message;
 
-
     }
 
 
+    publishButton.disabled = false;
+
 }
 
-
 </script>
-const SUPABASE_URL =
-    "https://bfuyopcvamjexixozxnm.supabase.co";
 
-const SUPABASE_KEY =
-    "sb_publishable_K21QP3ippzFaRfqSWgfX7w_Two3PEdT";
 
 </body>
 
