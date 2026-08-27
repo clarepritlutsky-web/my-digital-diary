@@ -1,20 +1,89 @@
-</div>
+<!DOCTYPE html>
+<html lang="en">
 
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Photos ♡</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="photos-page">
+
+    <header class="photos-header">
+
+        <a href="index.html" class="back-home">← home</a>
+
+        <h1>photos ♡</h1>
+
+        <p>little moments I want to remember.</p>
+
+    </header>
 
 
-            <div class="external-link">
+    <main class="photo-gallery">
 
-                <a href="#" target="_blank">
-                    view my VSCO →
-                </a>
+        <article class="photo-post">
+            <img
+                src="images/photo1.jpg"
+                alt="Photo"
+                class="gallery-photo"
+                data-full="images/photo1.jpg"
+            >
+        </article>
 
-            </div>
 
-        </section>
+        <article class="photo-post">
+            <img
+                src="images/photo2.jpg"
+                alt="Photo"
+                class="gallery-photo"
+                data-full="images/photo2.jpg"
+            >
+        </article>
+
+
+        <article class="photo-post">
+            <img
+                src="images/photo3.jpg"
+                alt="Photo"
+                class="gallery-photo"
+                data-full="images/photo3.jpg"
+            >
+        </article>
+
+
+        <article class="photo-post">
+            <img
+                src="images/photo4.jpg"
+                alt="Photo"
+                class="gallery-photo"
+                data-full="images/photo4.jpg"
+            >
+        </article>
 
     </main>
 
+
+    <!-- FULL SCREEN PHOTO VIEW -->
+
+    <div class="photo-lightbox">
+
+        <button class="close-photo">×</button>
+
+        <img src="" alt="" class="lightbox-image">
+
+    </div>
+
+
+    <footer>
+        made with ♡
+    </footer>
+
+
+    <script src="photos.js"></script>
 
 </body>
 
