@@ -1,6 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Admin ♡</title>
+
+</head>
+
+
+<body>
+
+
+<h1>my little internet corner — admin</h1>
+
+
+<h2>New Post</h2>
+
+
+<label>
+    What are you posting?
+</label>
+
+<br><br>
+
+<select id="post-type">
+
+    <option value="photo">
+        📷 Photo
+    </option>
+
+    <option value="sketch">
+        📓 Sketch
+    </option>
+
+    <option value="diary">
+        📖 Diary
+    </option>
+
+</select>
+
+
+<br><br>
+
+
+<label>
+    Title
+</label>
+
+<br>
+
+<input
+    type="text"
+    id="title"
+    placeholder="Title"
+>
+
+
+<br><br>
+
+
+<label>
+    Caption / text
+</label>
+
+<br>
+
+<textarea
+    id="caption"
+    rows="6"
+    cols="40"
+    placeholder="Write something..."
+></textarea>
+
+
+<br><br>
+
+
+<label>
+    Image
+</label>
+
+<br>
+
+<input
+    type="file"
+    id="image"
+    accept="image/*"
+>
+
+
+<br><br>
+
+
+<button id="publish">
+    PUBLISH
+</button>
+
+
+<p id="status"></p>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+<script>
+
+
 const SUPABASE_URL =
     "https://bfuyopcvamjexixozxnm.supabase.co";
 
+
 const SUPABASE_KEY =
-    "sb_publishable_K21QP3ippzFaRfqSWgfX7w_Two3PEdT";
-    
+    "YOUR_PUBLISHABLE_KEY";
+
+
+const client =
+    supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+    );
+
+
+const publishButton =
+    document.getElementById("publish");
+
+
+const status =
+    document.getElementById("status");
+
+
+publishButton.addEventListener(
+    "click",
+    publishPost
+);
+
+
+async function publishPost() {
+
+
+    const type =
+        document.getElementById(
+            "post-type"
+        ).value;
+
+
+    const title =
+        document.getElementById(
+            "title"
+        ).value;
+
+
+    const caption =
+        document.getElementById(
+            "caption"
+        ).value;
+
+
+    const file =
+        document.getElementById(
+            "image"
+        ).files[0];
+
+
+    status.textContent =
+        "Publishing...";
+
+
+    try {
+
+
+        let imageUrl = null;
+
+
+        /*
+        Upload image if there is one
+        */
+
+        if (file) {
+
+
+            const extension =
+                file.name
+                    .split(".")
+                    .pop();
+
+
+            const fileName =
+                `${Date.now()}.${extension}`;
+
+
+            const bucket =
+                type === "sketch"
+                    ? "sketches"
+                    : "photos";
+
+
+            const { error } =
+                await client
+                    .storage
+                    .from(bucket)
+                    .upload(
+                        fileName,
+                        file
+                    );
+
+
+            if (error) {
+
+                throw error;
+
+            }
+
+
+            const { data } =
+                client
+                    .storage
+                    .from(bucket)
+                    .getPublicUrl(
+                        fileName
+                    );
+
+
+            imageUrl =
+                data.publicUrl;
+
+        }
+
+
+        /*
+        Save post
+        */
+
+        const { error } =
+            await client
+                .from("posts")
+                .insert({
+
+                    type: type,
+
+                    title: title,
+
+                    caption: caption,
+
+                    image_url: imageUrl
+
+                });
+
+
+        if (error) {
+
+            throw error;
+
+        }
+
+
+        status.textContent =
+            "Published ♡";
+
+
+        /*
+        Clear form
+        */
+
+        document.getElementById(
+            "title"
+        ).value = "";
+
+
+        document.getElementById(
+            "caption"
+        ).value = "";
+
+
+        document.getElementById(
+            "image"
+        ).value = "";
+
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(error);
+
+
+        status.textContent =
+            "Error: " +
+            error.message;
+
+
+    }
+
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>
