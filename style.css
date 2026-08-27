@@ -109,3 +109,84 @@ nav a:hover {
 footer {
     padding: 50px;
 }
+
+/* CLICKABLE EMOJIS */
+
+.emoji-link {
+    text-decoration: none;
+    cursor: pointer;
+
+    font-size: 42px;
+
+    display: inline-block;
+
+    transition: transform 0.2s ease;
+}
+
+.emoji-link:hover {
+    transform: scale(1.15);
+}
+
+
+/* HOVER PREVIEW */
+
+.page-preview {
+    position: fixed;
+
+    width: 220px;
+
+    padding: 18px;
+
+    background: white;
+
+    border: 1px solid #222;
+
+    z-index: 9999;
+
+    pointer-events: none;
+
+    opacity: 0;
+
+    transform: translateY(5px);
+
+    transition: opacity 0.15s ease,
+                transform 0.15s ease;
+}
+
+
+.page-preview.show {
+    opacity: 1;
+
+    transform: translateY(0);
+}
+
+
+.preview-title {
+    font-family: Georgia, serif;
+
+    font-size: 20px;
+
+    margin-bottom: 10px;
+}
+
+
+.preview-text {
+    font-size: 13px;
+
+    line-height: 1.5;
+
+    color: #666;
+}
+
+
+.preview-hint {
+    margin-top: 15px;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    color: #999;
+}
