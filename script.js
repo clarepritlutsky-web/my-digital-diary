@@ -83,3 +83,100 @@ document.querySelectorAll(".emoji-link").forEach(link => {
     });
 
 });
+/* =====================================
+   SKETCHBOOK INTERACTION
+===================================== */
+
+const sketchbook = document.getElementById("sketchbook");
+
+const sketchbookOpen = document.getElementById("sketchbook-open");
+
+const sketchbookClose = document.getElementById("sketchbook-close");
+
+const nextPage = document.getElementById("next-page");
+
+const previousPage = document.getElementById("previous-page");
+
+const pageCounter = document.getElementById("page-counter");
+
+
+let currentPage = 1;
+
+const totalPages = 2;
+
+
+/* OPEN */
+
+sketchbookOpen.addEventListener("click", (event) => {
+
+    event.preventDefault();
+
+    sketchbook.classList.add("open");
+
+    document.body.style.overflow = "hidden";
+
+});
+
+
+/* CLOSE */
+
+sketchbookClose.addEventListener("click", () => {
+
+    sketchbook.classList.remove("open");
+
+    document.body.style.overflow = "";
+
+});
+
+
+/* CLOSE WHEN CLICKING OUTSIDE BOOK */
+
+sketchbook.addEventListener("click", (event) => {
+
+    if (event.target === sketchbook) {
+
+        sketchbook.classList.remove("open");
+
+        document.body.style.overflow = "";
+
+    }
+
+});
+
+
+/* NEXT PAGE */
+
+nextPage.addEventListener("click", () => {
+
+    if (currentPage < totalPages) {
+
+        currentPage++;
+
+        updatePage();
+
+    }
+
+});
+
+
+/* PREVIOUS PAGE */
+
+previousPage.addEventListener("click", () => {
+
+    if (currentPage > 1) {
+
+        currentPage--;
+
+        updatePage();
+
+    }
+
+});
+
+
+function updatePage() {
+
+    pageCounter.textContent =
+        `${currentPage} / ${totalPages}`;
+
+}
